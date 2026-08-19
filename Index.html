@@ -1,0 +1,2321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minha Gestão</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --primary:#111827;
+    --secondary:#2563eb;
+    --bg:#f4f6f8;
+    --card:#ffffff;
+    --text:#1f2937;
+    --muted:#6b7280;
+    --success:#16a34a;
+    --warning:#f59e0b;
+    --danger:#dc2626;
+    --border:#e5e7eb;
+}
+
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+button{
+    border:0;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+input,select{
+    width:100%;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus,select:focus{
+    border-color:var(--secondary);
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:240px;
+    background:#111827;
+    color:white;
+    padding:25px 15px;
+    position:fixed;
+    height:100vh;
+    left:0;
+    top:0;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:700;
+    padding:10px;
+    margin-bottom:30px;
+}
+
+.menu button{
+    width:100%;
+    background:transparent;
+    color:#d1d5db;
+    padding:13px;
+    border-radius:10px;
+    text-align:left;
+    margin-bottom:5px;
+    font-size:15px;
+}
+
+.menu button:hover,
+.menu button.active{
+    background:#1f2937;
+    color:white;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:240px;
+    width:calc(100% - 240px);
+    padding:30px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.topbar h1{
+    font-size:28px;
+}
+
+.date{
+    color:var(--muted);
+}
+
+/* DASHBOARD */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:22px;
+    border-radius:16px;
+    border:1px solid var(--border);
+}
+
+.card small{
+    color:var(--muted);
+}
+
+.card h2{
+    margin-top:8px;
+    font-size:25px;
+}
+
+.green{
+    color:var(--success);
+}
+
+.blue{
+    color:var(--secondary);
+}
+
+.orange{
+    color:var(--warning);
+}
+
+.red{
+    color:var(--danger);
+}
+
+.section{
+    background:white;
+    border-radius:16px;
+    padding:22px;
+    border:1px solid var(--border);
+    margin-bottom:20px;
+}
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.section-header h2{
+    font-size:19px;
+}
+
+/* BUTTONS */
+
+.btn{
+    padding:11px 16px;
+    border-radius:9px;
+    font-weight:600;
+}
+
+.btn-primary{
+    background:var(--secondary);
+    color:white;
+}
+
+.btn-dark{
+    background:#111827;
+    color:white;
+}
+
+.btn-danger{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.btn-success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.btn-light{
+    background:#f3f4f6;
+    color:#374151;
+}
+
+/* TABLE */
+
+.table-container{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:13px;
+    border-bottom:1px solid var(--border);
+    text-align:left;
+    white-space:nowrap;
+}
+
+th{
+    font-size:13px;
+    color:var(--muted);
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.badge-green{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.badge-orange{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.badge-red{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* FORMS */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:7px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.form-actions{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+}
+
+/* PRODUCTS */
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.product-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.product-image{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    background:#f3f4f6;
+}
+
+.product-info{
+    padding:15px;
+}
+
+.product-info h3{
+    margin-bottom:5px;
+}
+
+.product-info p{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:5px;
+}
+
+.price{
+    font-size:20px;
+    font-weight:700;
+    margin:10px 0;
+}
+
+.whatsapp{
+    width:100%;
+    background:#16a34a;
+    color:white;
+    padding:10px;
+    border-radius:8px;
+}
+
+/* CLIENT PHOTO */
+
+.client-photo{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#e5e7eb;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:100;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-content{
+    background:white;
+    width:100%;
+    max-width:650px;
+    max-height:90vh;
+    overflow:auto;
+    border-radius:18px;
+    padding:25px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.close{
+    background:#f3f4f6;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+}
+
+/* MOBILE */
+
+.mobile-nav{
+    display:none;
+}
+
+@media(max-width:1000px){
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .product-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+        padding:18px;
+        padding-bottom:90px;
+    }
+
+    .topbar h1{
+        font-size:22px;
+    }
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    .card h2{
+        font-size:20px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .product-grid{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .product-image{
+        height:130px;
+    }
+
+    .mobile-nav{
+        display:flex;
+        position:fixed;
+        bottom:0;
+        left:0;
+        right:0;
+        background:white;
+        border-top:1px solid var(--border);
+        height:70px;
+        z-index:50;
+        justify-content:space-around;
+    }
+
+    .mobile-nav button{
+        background:white;
+        font-size:11px;
+        color:#6b7280;
+    }
+
+    .mobile-nav button span{
+        display:block;
+        font-size:20px;
+        margin-bottom:3px;
+    }
+}
+
+/* HIDDEN */
+
+.hidden{
+    display:none!important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo">
+📦 Minha Gestão
+</div>
+
+<div class="menu">
+
+<button class="active" onclick="showPage('dashboard',this)">
+🏠 Dashboard
+</button>
+
+<button onclick="showPage('clientes',this)">
+👥 Clientes
+</button>
+
+<button onclick="showPage('produtos',this)">
+📦 Produtos
+</button>
+
+<button onclick="showPage('vendas',this)">
+💰 Vendas
+</button>
+
+<button onclick="showPage('receber',this)">
+📅 A receber
+</button>
+
+<button onclick="showPage('catalogo',this)">
+🛍️ Catálogo
+</button>
+
+</div>
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<div class="topbar">
+
+<div>
+<h1 id="pageTitle">Dashboard</h1>
+</div>
+
+<div class="date" id="today"></div>
+
+</div>
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page">
+
+<div class="cards">
+
+<div class="card">
+<small>Total faturado</small>
+<h2 id="dashFaturado">R$ 0,00</h2>
+</div>
+
+<div class="card">
+<small>Total recebido</small>
+<h2 class="green" id="dashRecebido">R$ 0,00</h2>
+</div>
+
+<div class="card">
+<small>A receber</small>
+<h2 class="orange" id="dashReceber">R$ 0,00</h2>
+</div>
+
+<div class="card">
+<small>Lucro</small>
+<h2 class="blue" id="dashLucro">R$ 0,00</h2>
+</div>
+
+</div>
+
+
+<div class="cards">
+
+<div class="card">
+<small>Itens vendidos</small>
+<h2 id="dashItens">0</h2>
+</div>
+
+<div class="card">
+<small>Produtos</small>
+<h2 id="dashProdutos">0</h2>
+</div>
+
+<div class="card">
+<small>Clientes</small>
+<h2 id="dashClientes">0</h2>
+</div>
+
+<div class="card">
+<small>Vendas</small>
+<h2 id="dashVendas">0</h2>
+</div>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-header">
+<h2>Últimas vendas</h2>
+
+<button class="btn btn-primary" onclick="openSaleModal()">
++ Nova venda
+</button>
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+<tr>
+<th>Cliente</th>
+<th>Produto</th>
+<th>Quantidade</th>
+<th>Total</th>
+<th>Pagamento</th>
+</tr>
+</thead>
+
+<tbody id="recentSales"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CLIENTES -->
+
+<section id="clientes" class="page hidden">
+
+<div class="section">
+
+<div class="section-header">
+
+<h2>Clientes</h2>
+
+<button class="btn btn-primary" onclick="openClientModal()">
++ Novo cliente
+</button>
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Foto</th>
+<th>Nome</th>
+<th>WhatsApp</th>
+<th>Compras</th>
+<th>Valor</th>
+<th>Ações</th>
+</tr>
+
+</thead>
+
+<tbody id="clientsTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PRODUTOS -->
+
+<section id="produtos" class="page hidden">
+
+<div class="section">
+
+<div class="section-header">
+
+<h2>Produtos</h2>
+
+<button class="btn btn-primary" onclick="openProductModal()">
++ Novo produto
+</button>
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Produto</th>
+<th>Marca</th>
+<th>Peso</th>
+<th>Estoque</th>
+<th>Vendidos</th>
+<th>Custo</th>
+<th>Venda</th>
+<th>Lucro</th>
+<th>Ações</th>
+</tr>
+
+</thead>
+
+<tbody id="productsTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- VENDAS -->
+
+<section id="vendas" class="page hidden">
+
+<div class="section">
+
+<div class="section-header">
+
+<h2>Vendas</h2>
+
+<button class="btn btn-primary" onclick="openSaleModal()">
++ Nova venda
+</button>
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Data</th>
+<th>Cliente</th>
+<th>Produto</th>
+<th>Qtd.</th>
+<th>Total</th>
+<th>Lucro</th>
+<th>Pagamento</th>
+</tr>
+
+</thead>
+
+<tbody id="salesTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- RECEBER -->
+
+<section id="receber" class="page hidden">
+
+<div class="section">
+
+<div class="section-header">
+
+<h2>Contas a receber</h2>
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Cliente</th>
+<th>Venda</th>
+<th>Parcela</th>
+<th>Vencimento</th>
+<th>Valor</th>
+<th>Status</th>
+<th>Ações</th>
+</tr>
+
+</thead>
+
+<tbody id="receivablesTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CATÁLOGO -->
+
+<section id="catalogo" class="page hidden">
+
+<div class="section">
+
+<div class="section-header">
+
+<h2>Catálogo</h2>
+
+<button class="btn btn-dark" onclick="shareCatalog()">
+🔗 Compartilhar catálogo
+</button>
+
+</div>
+
+<div class="product-grid" id="catalogGrid"></div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- MOBILE NAV -->
+
+<nav class="mobile-nav">
+
+<button onclick="showPage('dashboard')">
+<span>🏠</span>
+Início
+</button>
+
+<button onclick="showPage('clientes')">
+<span>👥</span>
+Clientes
+</button>
+
+<button onclick="showPage('produtos')">
+<span>📦</span>
+Produtos
+</button>
+
+<button onclick="showPage('vendas')">
+<span>💰</span>
+Vendas
+</button>
+
+<button onclick="showPage('catalogo')">
+<span>🛍️</span>
+Catálogo
+</button>
+
+</nav>
+
+
+<!-- CLIENT MODAL -->
+
+<div class="modal" id="clientModal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h2 id="clientModalTitle">Novo cliente</h2>
+
+<button class="close" onclick="closeModal('clientModal')">
+×
+</button>
+
+</div>
+
+<form id="clientForm">
+
+<input type="hidden" id="clientId">
+
+<div class="form-group">
+<label>Nome</label>
+<input id="clientName" required>
+</div>
+
+<div class="form-group">
+<label>WhatsApp</label>
+<input id="clientPhone" placeholder="5511999999999">
+</div>
+
+<div class="form-group">
+<label>Foto</label>
+<input type="file" id="clientPhoto" accept="image/*">
+</div>
+
+<div class="form-actions">
+
+<button type="submit" class="btn btn-primary">
+Salvar cliente
+</button>
+
+<button type="button" class="btn btn-light"
+onclick="closeModal('clientModal')">
+Cancelar
+</button>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<!-- PRODUCT MODAL -->
+
+<div class="modal" id="productModal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h2 id="productModalTitle">Novo produto</h2>
+
+<button class="close" onclick="closeModal('productModal')">
+×
+</button>
+
+</div>
+
+<form id="productForm">
+
+<input type="hidden" id="productId">
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Nome</label>
+<input id="productName" required>
+</div>
+
+<div class="form-group">
+<label>Marca</label>
+<input id="productBrand">
+</div>
+
+<div class="form-group">
+<label>Peso / volume / mg</label>
+<input id="productWeight">
+</div>
+
+<div class="form-group">
+<label>Quantidade em estoque</label>
+<input type="number" id="productStock" min="0" required>
+</div>
+
+<div class="form-group">
+<label>Custo unitário</label>
+<input type="number" step="0.01" id="productCost" required>
+</div>
+
+<div class="form-group">
+<label>Valor de venda</label>
+<input type="number" step="0.01" id="productPrice" required>
+</div>
+
+<div class="form-group full">
+<label>Foto</label>
+<input type="file" id="productPhoto" accept="image/*">
+</div>
+
+</div>
+
+<div class="form-actions">
+
+<button type="submit" class="btn btn-primary">
+Salvar produto
+</button>
+
+<button type="button" class="btn btn-light"
+onclick="closeModal('productModal')">
+Cancelar
+</button>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<!-- SALE MODAL -->
+
+<div class="modal" id="saleModal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h2>Nova venda</h2>
+
+<button class="close" onclick="closeModal('saleModal')">
+×
+</button>
+
+</div>
+
+<form id="saleForm">
+
+<div class="form-group">
+
+<label>Cliente</label>
+
+<select id="saleClient" required>
+<option value="">Selecione</option>
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Produto</label>
+
+<select id="saleProduct" required onchange="updateSalePreview()">
+<option value="">Selecione</option>
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Quantidade</label>
+
+<input type="number"
+id="saleQuantity"
+min="1"
+value="1"
+required
+oninput="updateSalePreview()">
+
+</div>
+
+
+<div class="section">
+
+<p>
+<strong>Total:</strong>
+<span id="saleTotal">R$ 0,00</span>
+</p>
+
+<p>
+<strong>Lucro:</strong>
+<span id="saleProfit">R$ 0,00</span>
+</p>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Forma de pagamento</label>
+
+<select id="salePayment" onchange="toggleInstallments()">
+
+<option value="Pix">Pix</option>
+<option value="Dinheiro">Dinheiro</option>
+<option value="Débito">Cartão de débito</option>
+<option value="Crédito">Cartão de crédito</option>
+<option value="Parcelado">Cartão parcelado</option>
+
+</select>
+
+</div>
+
+
+<div id="installmentArea" class="hidden">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Quantidade de parcelas</label>
+
+<input type="number"
+id="installments"
+min="2"
+max="24"
+value="2">
+
+</div>
+
+<div class="form-group">
+
+<label>Primeiro vencimento</label>
+
+<input type="date" id="firstDueDate">
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="form-actions">
+
+<button type="submit" class="btn btn-primary">
+Registrar venda
+</button>
+
+<button type="button"
+class="btn btn-light"
+onclick="closeModal('saleModal')">
+Cancelar
+</button>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<script>
+
+/* =========================
+   DATABASE LOCAL
+========================= */
+
+let clients =
+JSON.parse(localStorage.getItem("clients") || "[]");
+
+let products =
+JSON.parse(localStorage.getItem("products") || "[]");
+
+let sales =
+JSON.parse(localStorage.getItem("sales") || "[]");
+
+let receivables =
+JSON.parse(localStorage.getItem("receivables") || "[]");
+
+
+function saveData(){
+
+localStorage.setItem("clients",JSON.stringify(clients));
+localStorage.setItem("products",JSON.stringify(products));
+localStorage.setItem("sales",JSON.stringify(sales));
+localStorage.setItem("receivables",JSON.stringify(receivables));
+
+}
+
+
+/* =========================
+   UTIL
+========================= */
+
+function money(value){
+
+return new Intl.NumberFormat("pt-BR",{
+style:"currency",
+currency:"BRL"
+}).format(value || 0);
+
+}
+
+
+function id(){
+
+return Date.now().toString() +
+Math.random().toString(36).substring(2,7);
+
+}
+
+
+function closeModal(id){
+
+document.getElementById(id).classList.remove("active");
+
+}
+
+
+function openModal(id){
+
+document.getElementById(id).classList.add("active");
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(page,button){
+
+document.querySelectorAll(".page")
+.forEach(p=>p.classList.add("hidden"));
+
+document.getElementById(page)
+.classList.remove("hidden");
+
+document.querySelectorAll(".menu button")
+.forEach(b=>b.classList.remove("active"));
+
+if(button)
+button.classList.add("active");
+
+const titles={
+dashboard:"Dashboard",
+clientes:"Clientes",
+produtos:"Produtos",
+vendas:"Vendas",
+receber:"A receber",
+catalogo:"Catálogo"
+};
+
+document.getElementById("pageTitle")
+.innerText=titles[page];
+
+renderAll();
+
+}
+
+
+/* =========================
+   CLIENTES
+========================= */
+
+function openClientModal(client=null){
+
+document.getElementById("clientForm").reset();
+
+document.getElementById("clientId").value=
+client?.id || "";
+
+document.getElementById("clientName").value=
+client?.name || "";
+
+document.getElementById("clientPhone").value=
+client?.phone || "";
+
+document.getElementById("clientModalTitle").innerText=
+client ? "Editar cliente" : "Novo cliente";
+
+openModal("clientModal");
+
+}
+
+
+document.getElementById("clientForm")
+.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+const idValue =
+document.getElementById("clientId").value;
+
+const file =
+document.getElementById("clientPhoto").files[0];
+
+let photo =
+clients.find(c=>c.id===idValue)?.photo || "";
+
+if(file){
+
+photo=await readFile(file);
+
+}
+
+const client={
+
+id:idValue || id(),
+
+name:document.getElementById("clientName").value,
+
+phone:document.getElementById("clientPhone").value,
+
+photo
+
+};
+
+if(idValue){
+
+const index=clients.findIndex(c=>c.id===idValue);
+
+clients[index]=client;
+
+}else{
+
+clients.push(client);
+
+}
+
+saveData();
+
+closeModal("clientModal");
+
+renderAll();
+
+});
+
+
+function renderClients(){
+
+const table=
+document.getElementById("clientsTable");
+
+table.innerHTML="";
+
+clients.forEach(client=>{
+
+const clientSales=
+sales.filter(s=>s.clientId===client.id);
+
+const total=
+clientSales.reduce((sum,s)=>sum+s.total,0);
+
+table.innerHTML+=`
+
+<tr>
+
+<td>
+
+<img class="client-photo"
+src="${client.photo || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23e5e7eb%22/%3E%3C/svg%3E'}">
+
+</td>
+
+<td>${client.name}</td>
+
+<td>${client.phone || "-"}</td>
+
+<td>${clientSales.length}</td>
+
+<td>${money(total)}</td>
+
+<td>
+
+<button class="btn btn-light"
+onclick='openClientModal(${JSON.stringify(client)})'>
+Editar
+</button>
+
+<button class="btn btn-danger"
+onclick="deleteClient('${client.id}')">
+Excluir
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+
+function deleteClient(clientId){
+
+if(confirm("Excluir este cliente?")){
+
+clients=clients.filter(c=>c.id!==clientId);
+
+saveData();
+
+renderAll();
+
+}
+
+}
+
+
+/* =========================
+   PRODUTOS
+========================= */
+
+function openProductModal(product=null){
+
+document.getElementById("productForm").reset();
+
+document.getElementById("productId").value=
+product?.id || "";
+
+document.getElementById("productName").value=
+product?.name || "";
+
+document.getElementById("productBrand").value=
+product?.brand || "";
+
+document.getElementById("productWeight").value=
+product?.weight || "";
+
+document.getElementById("productStock").value=
+product?.stock ?? "";
+
+document.getElementById("productCost").value=
+product?.cost ?? "";
+
+document.getElementById("productPrice").value=
+product?.price ?? "";
+
+document.getElementById("productModalTitle").innerText=
+product ? "Editar produto" : "Novo produto";
+
+openModal("productModal");
+
+}
+
+
+document.getElementById("productForm")
+.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+const productId=
+document.getElementById("productId").value;
+
+const file=
+document.getElementById("productPhoto").files[0];
+
+let photo=
+products.find(p=>p.id===productId)?.photo || "";
+
+if(file){
+
+photo=await readFile(file);
+
+}
+
+const product={
+
+id:productId || id(),
+
+name:document.getElementById("productName").value,
+
+brand:document.getElementById("productBrand").value,
+
+weight:document.getElementById("productWeight").value,
+
+stock:Number(document.getElementById("productStock").value),
+
+sold:productId ?
+(products.find(p=>p.id===productId)?.sold || 0) : 0,
+
+cost:Number(document.getElementById("productCost").value),
+
+price:Number(document.getElementById("productPrice").value),
+
+photo
+
+};
+
+if(productId){
+
+const index=
+products.findIndex(p=>p.id===productId);
+
+products[index]=product;
+
+}else{
+
+products.push(product);
+
+}
+
+saveData();
+
+closeModal("productModal");
+
+renderAll();
+
+});
+
+
+function renderProducts(){
+
+const table=
+document.getElementById("productsTable");
+
+table.innerHTML="";
+
+products.forEach(product=>{
+
+const profit=
+product.price-product.cost;
+
+let status="";
+
+if(product.stock===0){
+
+status=`<span class="badge badge-red">Esgotado</span>`;
+
+}else if(product.stock<=3){
+
+status=`<span class="badge badge-orange">Estoque baixo</span>`;
+
+}else{
+
+status=`<span class="badge badge-green">Disponível</span>`;
+
+}
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${product.name}</td>
+
+<td>${product.brand || "-"}</td>
+
+<td>${product.weight || "-"}</td>
+
+<td>
+
+<strong>${product.stock}</strong>
+<br>${status}
+
+</td>
+
+<td>${product.sold || 0}</td>
+
+<td>${money(product.cost)}</td>
+
+<td>${money(product.price)}</td>
+
+<td>${money(profit)}</td>
+
+<td>
+
+<button class="btn btn-light"
+onclick='openProductModal(${JSON.stringify(product)})'>
+Editar
+</button>
+
+<button class="btn btn-danger"
+onclick="deleteProduct('${product.id}')">
+Excluir
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+
+function deleteProduct(productId){
+
+if(confirm("Excluir este produto?")){
+
+products=
+products.filter(p=>p.id!==productId);
+
+saveData();
+
+renderAll();
+
+}
+
+}
+
+
+/* =========================
+   VENDAS
+========================= */
+
+function openSaleModal(){
+
+document.getElementById("saleForm").reset();
+
+const today=
+new Date().toISOString().split("T")[0];
+
+document.getElementById("firstDueDate").value=today;
+
+populateSaleSelects();
+
+updateSalePreview();
+
+openModal("saleModal");
+
+}
+
+
+function populateSaleSelects(){
+
+const clientSelect=
+document.getElementById("saleClient");
+
+clientSelect.innerHTML=
+'<option value="">Selecione</option>';
+
+clients.forEach(c=>{
+
+clientSelect.innerHTML+=
+`<option value="${c.id}">
+${c.name}
+</option>`;
+
+});
+
+
+const productSelect=
+document.getElementById("saleProduct");
+
+productSelect.innerHTML=
+'<option value="">Selecione</option>';
+
+products
+.filter(p=>p.stock>0)
+.forEach(p=>{
+
+productSelect.innerHTML+=
+`<option value="${p.id}">
+${p.name} — ${money(p.price)} — estoque: ${p.stock}
+</option>`;
+
+});
+
+}
+
+
+function updateSalePreview(){
+
+const product=
+products.find(
+p=>p.id===document.getElementById("saleProduct").value
+);
+
+const quantity=
+Number(document.getElementById("saleQuantity").value || 0);
+
+if(!product){
+
+document.getElementById("saleTotal").innerText=
+money(0);
+
+document.getElementById("saleProfit").innerText=
+money(0);
+
+return;
+
+}
+
+const total=
+product.price*quantity;
+
+const profit=
+(product.price-product.cost)*quantity;
+
+document.getElementById("saleTotal")
+.innerText=money(total);
+
+document.getElementById("saleProfit")
+.innerText=money(profit);
+
+}
+
+
+function toggleInstallments(){
+
+const payment=
+document.getElementById("salePayment").value;
+
+document.getElementById("installmentArea")
+.classList.toggle(
+"hidden",
+payment!=="Parcelado"
+);
+
+}
+
+
+document.getElementById("saleForm")
+.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const client=
+clients.find(c=>c.id===document.getElementById("saleClient").value);
+
+const product=
+products.find(p=>p.id===document.getElementById("saleProduct").value);
+
+const quantity=
+Number(document.getElementById("saleQuantity").value);
+
+const payment=
+document.getElementById("salePayment").value;
+
+if(!client || !product){
+
+alert("Selecione cliente e produto.");
+
+return;
+
+}
+
+if(quantity>product.stock){
+
+alert("Quantidade maior que o estoque disponível.");
+
+return;
+
+}
+
+const total=
+product.price*quantity;
+
+const profit=
+(product.price-product.cost)*quantity;
+
+const sale={
+
+id:id(),
+
+date:new Date().toISOString(),
+
+clientId:client.id,
+
+productId:product.id,
+
+quantity,
+
+total,
+
+profit,
+
+payment
+
+};
+
+sales.push(sale);
+
+
+/* ATUALIZA ESTOQUE */
+
+product.stock-=quantity;
+
+product.sold=
+(product.sold || 0)+quantity;
+
+
+/* PARCELAMENTO */
+
+if(payment==="Parcelado"){
+
+const number=
+Number(document.getElementById("installments").value);
+
+const firstDate=
+document.getElementById("firstDueDate").value;
+
+const installmentValue=
+total/number;
+
+for(let i=0;i<number;i++){
+
+const date=
+new Date(firstDate+"T12:00:00");
+
+date.setMonth(
+date.getMonth()+i
+);
+
+receivables.push({
+
+id:id(),
+
+saleId:sale.id,
+
+clientId:client.id,
+
+productId:product.id,
+
+installment:i+1,
+
+totalInstallments:number,
+
+dueDate:date.toISOString().split("T")[0],
+
+value:installmentValue,
+
+paid:false
+
+});
+
+}
+
+}else{
+
+/* PAGAMENTOS À VISTA */
+
+receivables.push({
+
+id:id(),
+
+saleId:sale.id,
+
+clientId:client.id,
+
+productId:product.id,
+
+installment:1,
+
+totalInstallments:1,
+
+dueDate:new Date().toISOString().split("T")[0],
+
+value:total,
+
+paid:true
+
+});
+
+}
+
+saveData();
+
+closeModal("saleModal");
+
+renderAll();
+
+alert("Venda registrada com sucesso!");
+
+});
+
+
+/* =========================
+   TABELA DE VENDAS
+========================= */
+
+function renderSales(){
+
+const table=
+document.getElementById("salesTable");
+
+const recent=
+document.getElementById("recentSales");
+
+table.innerHTML="";
+recent.innerHTML="";
+
+sales.slice().reverse().forEach(sale=>{
+
+const client=
+clients.find(c=>c.id===sale.clientId);
+
+const product=
+products.find(p=>p.id===sale.productId);
+
+if(!client || !product) return;
+
+const date=
+new Date(sale.date).toLocaleDateString("pt-BR");
+
+const row=`
+
+<tr>
+
+<td>${date}</td>
+
+<td>${client.name}</td>
+
+<td>${product.name}</td>
+
+<td>${sale.quantity}</td>
+
+<td>${money(sale.total)}</td>
+
+<td>${money(sale.profit)}</td>
+
+<td>${sale.payment}</td>
+
+</tr>
+
+`;
+
+table.innerHTML+=row;
+
+});
+
+
+sales.slice(-5).reverse().forEach(sale=>{
+
+const client=
+clients.find(c=>c.id===sale.clientId);
+
+const product=
+products.find(p=>p.id===sale.productId);
+
+if(!client || !product) return;
+
+recent.innerHTML+=`
+
+<tr>
+
+<td>${client.name}</td>
+
+<td>${product.name}</td>
+
+<td>${sale.quantity}</td>
+
+<td>${money(sale.total)}</td>
+
+<td>${sale.payment}</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+
+/* =========================
+   CONTAS A RECEBER
+========================= */
+
+function renderReceivables(){
+
+const table=
+document.getElementById("receivablesTable");
+
+table.innerHTML="";
+
+receivables
+.filter(r=>!r.paid)
+.sort((a,b)=>a.dueDate.localeCompare(b.dueDate))
+.forEach(r=>{
+
+const client=
+clients.find(c=>c.id===r.clientId);
+
+const product=
+products.find(p=>p.id===r.productId);
+
+if(!client) return;
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${client.name}</td>
+
+<td>${product?.name || "-"}</td>
+
+<td>${r.installment}/${r.totalInstallments}</td>
+
+<td>${formatDate(r.dueDate)}</td>
+
+<td>${money(r.value)}</td>
+
+<td>
+
+<span class="badge badge-orange">
+Pendente
+</span>
+
+</td>
+
+<td>
+
+<button class="btn btn-success"
+onclick="markPaid('${r.id}')">
+Pago
+</button>
+
+<button class="btn btn-light"
+onclick="addCalendar('${r.id}')">
+📅 Agenda
+</button>
+
+<button class="btn btn-success"
+onclick="chargeWhatsApp('${r.id}')">
+WhatsApp
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+
+function markPaid(idValue){
+
+const item=
+receivables.find(r=>r.id===idValue);
+
+if(item){
+
+item.paid=true;
+
+item.paidAt=
+new Date().toISOString();
+
+saveData();
+
+renderAll();
+
+}
+
+}
+
+
+/* =========================
+   GOOGLE CALENDAR
+========================= */
+
+function addCalendar(idValue){
+
+const item=
+receivables.find(r=>r.id===idValue);
+
+if(!item) return;
+
+const client=
+clients.find(c=>c.id===item.clientId);
+
+const title=
+`Cobrar ${client?.name || "cliente"}`;
+
+const start=
+item.dueDate.replaceAll("-","");
+
+const next=
+new Date(item.dueDate+"T12:00:00");
+
+next.setDate(next.getDate()+1);
+
+const end=
+next.toISOString()
+.split("T")[0]
+.replaceAll("-","");
+
+const url=
+"https://calendar.google.com/calendar/render?action=TEMPLATE"+
+"&text="+encodeURIComponent(title)+
+"&dates="+start+"/"+end+
+"&details="+encodeURIComponent(
+`Cobrança referente à parcela ${item.installment}/${item.totalInstallments}. Valor: ${money(item.value)}`
+);
+
+window.open(url,"_blank");
+
+}
+
+
+/* =========================
+   WHATSAPP
+========================= */
+
+function chargeWhatsApp(idValue){
+
+const item=
+receivables.find(r=>r.id===idValue);
+
+if(!item) return;
+
+const client=
+clients.find(c=>c.id===item.clientId);
+
+if(!client?.phone){
+
+alert("Este cliente não possui WhatsApp cadastrado.");
+
+return;
+
+}
+
+const message=
+`Olá, ${client.name}! Tudo bem? 😊
+
+Passando para lembrar da parcela ${item.installment}/${item.totalInstallments}, no valor de ${money(item.value)}, com vencimento em ${formatDate(item.dueDate)}.
+
+Qualquer coisa estou à disposição!`;
+
+window.open(
+"https://wa.me/"+client.phone+
+"?text="+encodeURIComponent(message),
+"_blank"
+);
+
+}
+
+
+/* =========================
+   CATÁLOGO
+========================= */
+
+function renderCatalog(){
+
+const grid=
+document.getElementById("catalogGrid");
+
+grid.innerHTML="";
+
+products
+.filter(p=>p.stock>0)
+.forEach(product=>{
+
+const photo=
+product.photo ||
+"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3C/svg%3E";
+
+const message=
+`Olá! Tenho interesse no produto ${product.name}.`;
+
+grid.innerHTML+=`
+
+<div class="product-card">
+
+<img class="product-image"
+src="${photo}">
+
+<div class="product-info">
+
+<h3>${product.name}</h3>
+
+<p>${product.brand || ""}</p>
+
+<p>${product.weight || ""}</p>
+
+<div class="price">
+${money(product.price)}
+</div>
+
+<p>
+Disponível: ${product.stock}
+</p>
+
+<button class="whatsapp"
+onclick="window.open(
+'https://wa.me/?text='+encodeURIComponent('${message}')
+,'_blank'
+)">
+💬 Tenho interesse
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+function shareCatalog(){
+
+const url=window.location.href;
+
+if(navigator.share){
+
+navigator.share({
+
+title:"Meu catálogo",
+
+text:"Confira meu catálogo:",
+
+url
+
+});
+
+}else{
+
+navigator.clipboard.writeText(url);
+
+alert("Link do catálogo copiado!");
+
+}
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function renderDashboard(){
+
+const faturado=
+sales.reduce((sum,s)=>sum+s.total,0);
+
+const lucro=
+sales.reduce((sum,s)=>sum+s.profit,0);
+
+const recebido=
+receivables
+.filter(r=>r.paid)
+.reduce((sum,r)=>sum+r.value,0);
+
+const receber=
+receivables
+.filter(r=>!r.paid)
+.reduce((sum,r)=>sum+r.value,0);
+
+const itens=
+sales.reduce((sum,s)=>sum+s.quantity,0);
+
+document.getElementById("dashFaturado")
+.innerText=money(faturado);
+
+document.getElementById("dashRecebido")
+.innerText=money(recebido);
+
+document.getElementById("dashReceber")
+.innerText=money(receber);
+
+document.getElementById("dashLucro")
+.innerText=money(lucro);
+
+document.getElementById("dashItens")
+.innerText=itens;
+
+document.getElementById("dashProdutos")
+.innerText=products.length;
+
+document.getElementById("dashClientes")
+.innerText=clients.length;
+
+document.getElementById("dashVendas")
+.innerText=sales.length;
+
+}
+
+
+/* =========================
+   IMAGE
+========================= */
+
+function readFile(file){
+
+return new Promise((resolve,reject)=>{
+
+const reader=new FileReader();
+
+reader.onload=()=>resolve(reader.result);
+
+reader.onerror=reject;
+
+reader.readAsDataURL(file);
+
+});
+
+}
+
+
+/* =========================
+   DATE
+========================= */
+
+function formatDate(date){
+
+return new Date(date+"T12:00:00")
+.toLocaleDateString("pt-BR");
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderAll(){
+
+renderDashboard();
+
+renderClients();
+
+renderProducts();
+
+renderSales();
+
+renderReceivables();
+
+renderCatalog();
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+document.getElementById("today")
+.innerText=
+new Date().toLocaleDateString(
+"pt-BR",
+{
+weekday:"long",
+day:"2-digit",
+month:"long",
+year:"numeric"
+}
+);
+
+renderAll();
+
+</script>
+
+</body>
+</html>
